@@ -1,12 +1,13 @@
-package ru.nvy;
+package ru.nvy.models.graph;
 
-import ru.nvy.models.Edge;
-import ru.nvy.models.GraphElement;
 import ru.nvy.models.TransitionFunction;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Работа с элементами графа, подсчет конечных состояний, работа с элементами графа и ребрами
+ */
 public class Graph {
     private final HashMap<String, GraphElement> states;
     private int numOfCommonStates;
@@ -18,8 +19,16 @@ public class Graph {
         numOfFinalStates = 0;
     }
 
-    public GraphElement getFirstEntity() {
+    public GraphElement getFirstGraphElement() {
         return states.get("q0");
+    }
+
+    // region Work with Edge
+    public void addNewEdgeFromFile(TransitionFunction transitionFunction) {
+        GraphElement stateFrom = createGraphElementString(transitionFunction.from());
+        GraphElement stateTo = createGraphElementString(transitionFunction.to());
+        Edge edge =  new Edge(transitionFunction.character(), stateTo);
+        stateFrom.addEdge(edge);
     }
 
     public void removeEdge(GraphElement from, Edge edge) {
@@ -32,20 +41,14 @@ public class Graph {
             numOfCommonStates--;
         }
     }
-
-
-    public void addNewEdgeFromCommand(TransitionFunction transitionFunction) {
-        GraphElement entityFrom = createGraphElementString(transitionFunction.from());
-        GraphElement entityTo = createGraphElementString(transitionFunction.to());
-        entityFrom.addEdge(new Edge(transitionFunction.character(), entityTo));
-    }
-
-    public void addNewEntity(GraphElement e, Edge newEdge) {
-        createGraphElement(newEdge.getTo());
-        e.addEdge(newEdge);
-    }
+    // endregion
 
     // region Create GraphElement
+    public void addNewGraphElement(GraphElement graphElement, Edge newEdge) {
+        createGraphElement(newEdge.getTo());
+        graphElement.addEdge(newEdge);
+    }
+
     public void createGraphElement(GraphElement entity) {
         String nameOfEntity = entity.getName();
         if (states.containsKey(nameOfEntity)) {

@@ -1,4 +1,4 @@
-package ru.nvy.models;
+package ru.nvy.models.graph;
 
 /**
  * Создание ребра символ + конечный элемент

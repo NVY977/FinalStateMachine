@@ -1,4 +1,4 @@
-package ru.nvy.models;
+package ru.nvy.models.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
