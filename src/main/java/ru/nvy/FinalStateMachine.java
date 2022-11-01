@@ -10,6 +10,10 @@ import java.util.*;
 
 public class FinalStateMachine {
 
+    /**
+     * Валидация входного файла
+     * @param str
+     */
     public static void validateInputFile(String str) {
         if (str.isEmpty()) {
             throw new NoSuchElementException("Пустая строка!");
@@ -48,6 +52,11 @@ public class FinalStateMachine {
         }
     }
 
+    /**
+     * Парсинг из вводного файла после валидации строки
+     * @param str
+     * @return
+     */
     public static TransitionFunction parseInputFile(String str) {
         String from = str.substring(0, str.indexOf(","));
         String character = str.substring(str.indexOf(",") + 1, str.lastIndexOf("="));
@@ -56,6 +65,12 @@ public class FinalStateMachine {
         return new TransitionFunction(from, symbol, to);
     }
 
+    /**
+     *
+     * @param graph
+     * @param string
+     * @return
+     */
     public static boolean solveString(Graph graph, String string) {
         GraphElement currentEntity = graph.getFirstGraphElement();
         for (int i = 0; i < string.length(); i++) {
@@ -187,6 +202,4 @@ public class FinalStateMachine {
         }
         return null;
     }
-
-
 }
