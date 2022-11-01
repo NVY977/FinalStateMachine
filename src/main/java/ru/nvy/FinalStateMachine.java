@@ -12,6 +12,7 @@ public class FinalStateMachine {
 
     /**
      * Валидация входного файла
+     *
      * @param str
      */
     public static void validateInputFile(String str) {
@@ -54,6 +55,7 @@ public class FinalStateMachine {
 
     /**
      * Парсинг из вводного файла после валидации строки
+     *
      * @param str
      * @return
      */
@@ -66,6 +68,7 @@ public class FinalStateMachine {
     }
 
     /**
+     * Решение строки
      *
      * @param graph
      * @param string
@@ -83,6 +86,12 @@ public class FinalStateMachine {
         return currentEntity.getName().startsWith("f");
     }
 
+    /**
+     * Находим повторяющиеся элементы
+     *
+     * @param graph
+     * @return
+     */
     public static GraphElement getRepeatedGraphElement(Graph graph) {
         for (GraphElement graphElement : graph.getStates().values()) {
             if (!Utils.isDeterministic(graphElement)) {
@@ -94,6 +103,7 @@ public class FinalStateMachine {
 
     /**
      * Создаем новое имя для нашего правого состояния
+     *
      * @param graph
      * @param graphElements
      * @return
@@ -106,9 +116,9 @@ public class FinalStateMachine {
         }
     }
 
-
     /**
      * Просто создаем новый граф элемент
+     *
      * @param name
      * @param graphElements
      * @return
@@ -131,73 +141,101 @@ public class FinalStateMachine {
 
     public static void refactorCurrentGraphElement(Graph graph, GraphElement currentGraphElement) {
         GraphElement graphElement = graph.getStates().get(currentGraphElement.getName());  // текущие элемент графа
-        Character badEdge = getIssueCharacterFrom(graphElement); // ???
+        Character badEdge = getRepeatedCharacter(graphElement);
         Set<GraphElement> sadGraphElement = new HashSet<>(); // создали новый массив повторяющихся элементов графа
-        // идем по ребрам нашего плохого граф элемента
         for (Edge edge : graphElement.getEdges()) {
-            if (edge.getCharacter().equals(badEdge))
+            if (edge.getCharacter().equals(badEdge)) {
                 sadGraphElement.add(edge.getTo());
+            }
         }
-        // создаем новое имя для нашего правого State
+
         String newNameForNextState = createNewNameForRightState(graph, sadGraphElement);
-        // создаем новый элемент графа
         GraphElement newGraphElement = makeNewRightGraphElement(newNameForNextState, sadGraphElement);
-        // стоп
         Map<GraphElement, Set<GraphElement>> map = mapGraph(graph);
-        for (GraphElement e : map.keySet()) {
-            if (map.get(e).containsAll(sadGraphElement)) {
-                Object[] edges = e.getEdges().toArray();
-                for (Object edge : edges) {
-                    Character characterFrom = ((Edge) edge).getCharacter();
-                    if (isReplaceableEdge(e, characterFrom, sadGraphElement, newGraphElement)) {
-                        replaceEdge(graph, e, ((Edge) edge), new Edge(characterFrom, newGraphElement));
-                    }
+
+        // keySet - возвращает: Set (хранящийся в наборе не по порядку), в котором хранятся значения ключей.
+        for (GraphElement element : map.keySet()) {
+            Object[] edges = element.getEdges().toArray();
+            for (Object edge : edges) {
+                Edge curEdge = ((Edge) edge);
+                Character characterFrom = curEdge.getCharacter();
+                if (isReplaceableEdge(element, characterFrom, sadGraphElement, newGraphElement)) {
+                    Edge newEdge =  new Edge(characterFrom, newGraphElement);
+                    replaceEdge(graph, element, curEdge, newEdge);
                 }
             }
         }
     }
 
-    private static boolean isReplaceableEdge(GraphElement entity, Character character, Collection<GraphElement> issueEntities, GraphElement newEntity) {
-        Collection<GraphElement> forCharacter = new ArrayList<>();
-        for (Edge edge : entity.getEdges()) {
-            if (edge.getCharacter().equals(character)) forCharacter.add(edge.getTo());
-        }
-        forCharacter.add(entity);
-        if (forCharacter.contains(newEntity)) return true;
-        return forCharacter.containsAll(issueEntities);
-    }
-
-    private static void replaceEdge(Graph gp, GraphElement e, Edge oldEdge, Edge newEdge) {
-        gp.removeEdge(e, oldEdge);
-        gp.addNewGraphElement(e, newEdge);
-    }
-
-    private static Map<GraphElement, Set<GraphElement>> mapGraph(Graph gp) {
-        Map<GraphElement, Set<GraphElement>> map = new HashMap<>();
-        for (GraphElement entity : gp.getStates().values()) {
-            HashSet<GraphElement> set = new HashSet<>();
-            for (Edge e : entity.getEdges()) {
-                set.add(e.getTo());
+    /**
+     * ??? Является ли это ребро заменяемым
+     *
+     * @param graphElement
+     * @param character
+     * @param issueEntities
+     * @param newEntity
+     * @return
+     */
+    private static boolean isReplaceableEdge(GraphElement graphElement, Character character, Collection<GraphElement> issueEntities, GraphElement newEntity) {
+        Collection<GraphElement> graphElements = new ArrayList<>();
+        for (Edge edge : graphElement.getEdges()) {
+            if (edge.getCharacter().equals(character)) {
+                graphElements.add(edge.getTo());
             }
-            map.put(entity, set);
+        }
+        graphElements.add(graphElement);
+        if (graphElements.contains(newEntity)) {
+            return true;
+        }
+        return graphElements.containsAll(issueEntities);
+    }
+
+    /**
+     * Замена старого ребра на новое
+     *
+     * @param graph
+     * @param graphElement
+     * @param oldEdge
+     * @param newEdge
+     */
+    private static void replaceEdge(Graph graph, GraphElement graphElement, Edge oldEdge, Edge newEdge) {
+        graph.removeEdge(graphElement, oldEdge);
+        graph.addNewGraphElement(graphElement, newEdge);
+    }
+
+    /**
+     * Составляем Map из графа
+     *
+     * @param graph
+     * @return
+     */
+    private static Map<GraphElement, Set<GraphElement>> mapGraph(Graph graph) {
+        Map<GraphElement, Set<GraphElement>> map = new HashMap<>();
+        for (GraphElement graphElement : graph.getStates().values()) {
+            HashSet<GraphElement> edges = new HashSet<>();
+            for (Edge edge : graphElement.getEdges()) {
+                edges.add(edge.getTo());
+            }
+            map.put(graphElement, edges);
         }
         return map;
     }
 
-    /***
+    /**
+     * Получение плохих ребер
      *
      * @param graphElement
      * @return
      */
-    private static Character getIssueCharacterFrom(GraphElement graphElement) {
-        Map<Character, Integer> chToNum = new HashMap<>();
+    private static Character getRepeatedCharacter(GraphElement graphElement) {
+        Map<Character, Integer> characterMap = new HashMap<>();
         Character charBuff;
         for (Edge edge : graphElement.getEdges()) {
             charBuff = edge.getCharacter();
-            if (chToNum.containsKey(charBuff)) {
+            if (characterMap.containsKey(charBuff)) {
                 return charBuff;
             } else {
-                chToNum.put(charBuff, 1);
+                characterMap.put(charBuff, 1);
             }
         }
         return null;
