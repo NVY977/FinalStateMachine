@@ -108,11 +108,11 @@ public class FinalStateMachine {
      * @param graphElements
      * @return
      */
-    private static String createNewNameForRightState(Graph graph, Set<GraphElement> graphElements) {
+    private static String createNewNameForCenteredState(Graph graph, Set<GraphElement> graphElements) {
         if (Utils.isFinalState(graphElements)) {
             return "f" + graph.getNumOfFinalStates();
         } else {
-            return "g" + graph.getNumOfCommonStates();
+            return "s" + graph.getNumOfCommonStates();
         }
     }
 
@@ -123,7 +123,7 @@ public class FinalStateMachine {
      * @param graphElements
      * @return
      */
-    private static GraphElement makeNewRightGraphElement(String name, Set<GraphElement> graphElements) {
+    private static GraphElement makeNewCenteredGraphElement(String name, Set<GraphElement> graphElements) {
         GraphElement newGraphElement = new GraphElement(name);
         for (GraphElement graphElement : graphElements) {
             for (Edge edge : graphElement.getEdges()) {
@@ -149,8 +149,8 @@ public class FinalStateMachine {
             }
         }
 
-        String newNameForNextState = createNewNameForRightState(graph, sadGraphElement);
-        GraphElement newGraphElement = makeNewRightGraphElement(newNameForNextState, sadGraphElement);
+        String newNameForNextState = createNewNameForCenteredState(graph, sadGraphElement);
+        GraphElement newGraphElement = makeNewCenteredGraphElement(newNameForNextState, sadGraphElement);
         Map<GraphElement, Set<GraphElement>> map = mapGraph(graph);
 
         // keySet - возвращает: Set (хранящийся в наборе не по порядку), в котором хранятся значения ключей.

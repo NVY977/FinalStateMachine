@@ -16,8 +16,9 @@ public class GeneralService {
         for (String element : elements) {
             FinalStateMachine.validateInputFile(element);
             TransitionFunction transitionFunction = FinalStateMachine.parseInputFile(element);
-            graph.addNewEdgeFromFile(transitionFunction);
+            graph.addNewTransFuncFromFile(transitionFunction);
         }
+
         System.out.println("Before:\n" + graph);
 
         GraphElement repeatedGraphElements;
@@ -29,7 +30,7 @@ public class GeneralService {
         System.out.println("After:\n" + graph);
         System.out.println(FinalStateMachine.solveString(graph,"aa+cd*=357"));
         System.out.println(FinalStateMachine.solveString(graph,"add"));
-        System.out.println(FinalStateMachine.solveString(graph,"acf"));
+        System.out.println(FinalStateMachine.solveString(graph,"aссссcf"));
         System.out.println(FinalStateMachine.solveString(graph,"abf"));
         System.out.println(FinalStateMachine.solveString(graph,"ab"));
         System.out.println("\n");

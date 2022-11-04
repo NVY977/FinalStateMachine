@@ -24,7 +24,7 @@ public class Graph {
     }
 
     // region Work with Edge
-    public void addNewEdgeFromFile(TransitionFunction transitionFunction) {
+    public void addNewTransFuncFromFile(TransitionFunction transitionFunction) {
         GraphElement stateFrom = createGraphElementString(transitionFunction.from());
         GraphElement stateTo = createGraphElementString(transitionFunction.to());
         Edge edge =  new Edge(transitionFunction.character(), stateTo);
