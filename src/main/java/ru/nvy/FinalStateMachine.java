@@ -95,6 +95,7 @@ public class FinalStateMachine {
     public static GraphElement getRepeatedGraphElement(Graph graph) {
         for (GraphElement graphElement : graph.getStates().values()) {
             if (!Utils.isDeterministic(graphElement)) {
+
                 return graphElement;
             }
         }

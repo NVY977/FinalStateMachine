@@ -28,11 +28,18 @@ public class GeneralService {
         }
 
         System.out.println("After:\n" + graph);
-        System.out.println(FinalStateMachine.solveString(graph,"aa+cd*=357"));
-        System.out.println(FinalStateMachine.solveString(graph,"add"));
-        System.out.println(FinalStateMachine.solveString(graph,"aссссcf"));
-        System.out.println(FinalStateMachine.solveString(graph,"abf"));
-        System.out.println(FinalStateMachine.solveString(graph,"ab"));
+//        System.out.println(FinalStateMachine.solveString(graph,"aa+cd*=357"));
+//        System.out.println(FinalStateMachine.solveString(graph,"add"));
+//        System.out.println(FinalStateMachine.solveString(graph,"aссссcf"));
+//        System.out.println(FinalStateMachine.solveString(graph,"abf"));
+//        System.out.println(FinalStateMachine.solveString(graph,"ab"));
+        System.out.println(FinalStateMachine.solveString(graph, "acx"));
+        System.out.println(FinalStateMachine.solveString(graph, "akh"));
+        System.out.println(FinalStateMachine.solveString(graph, "ammmedcx"));
+//        System.out.println(FinalStateMachine.solveString(graph, "aem"));
+//        System.out.println(FinalStateMachine.solveString(graph, "abefz"));
+//        System.out.println(FinalStateMachine.solveString(graph, "abem"));
+//        System.out.println(FinalStateMachine.solveString(graph, "acbchm"));
         System.out.println("\n");
     }
 }
