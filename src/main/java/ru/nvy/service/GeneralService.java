@@ -33,13 +33,14 @@ public class GeneralService {
 //        System.out.println(FinalStateMachine.solveString(graph,"aссссcf"));
 //        System.out.println(FinalStateMachine.solveString(graph,"abf"));
 //        System.out.println(FinalStateMachine.solveString(graph,"ab"));
-        System.out.println(FinalStateMachine.solveString(graph, "acx"));
-        System.out.println(FinalStateMachine.solveString(graph, "akh"));
-        System.out.println(FinalStateMachine.solveString(graph, "ammmedcx"));
+//        System.out.println(FinalStateMachine.solveString(graph, "acx"));
+//        System.out.println(FinalStateMachine.solveString(graph, "aezhjfljdlzsf"));
+        System.out.println(FinalStateMachine.solveString(graph, "ammmmmedcx"));
+//        System.out.println(FinalStateMachine.solveString(graph, "ammmedcx"));
 //        System.out.println(FinalStateMachine.solveString(graph, "aem"));
 //        System.out.println(FinalStateMachine.solveString(graph, "abefz"));
 //        System.out.println(FinalStateMachine.solveString(graph, "abem"));
-//        System.out.println(FinalStateMachine.solveString(graph, "acbchm"));
+//        System.out.println(FinalStateMachine.solveString(graph, "acbchm"));4
         System.out.println("\n");
     }
 }

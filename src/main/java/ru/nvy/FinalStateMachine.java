@@ -76,14 +76,19 @@ public class FinalStateMachine {
      */
     public static boolean solveString(Graph graph, String string) {
         GraphElement currentEntity = graph.getFirstGraphElement();
+        int count=string.length();
         for (int i = 0; i < string.length(); i++) {
             for (Edge edge : currentEntity.getEdges()) {
                 if (edge.getCharacter().equals(string.charAt(i))) {
                     currentEntity = edge.getTo();
+                    count--;
                 }
             }
         }
-        return currentEntity.getName().startsWith("f");
+        if(currentEntity.getName().startsWith("f") && count ==0 ){
+            return currentEntity.getName().startsWith("f");
+        }
+        return false;
     }
 
     /**
@@ -167,6 +172,7 @@ public class FinalStateMachine {
             }
         }
     }
+
 
     /**
      * ??? Является ли это ребро заменяемым
